@@ -1,1 +1,8 @@
-h1 Hello!
+h1 Requests Trap
+p This is a tool for capturing and inspecting HTTP requests.
+p
+  | Any requests sent to any endpoint within this app will be captured and stored.
+  =< link_to "Try it now", trap_path('test')
+p
+  | You can then explore requests made to this endpoint by appending <code>/requests</code> to the url.
+  =< link_to "See captured requests", requests_path('test')
