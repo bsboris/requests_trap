@@ -4,6 +4,19 @@ class RequestsController < ApplicationController
     render nothing: true, status: 200
   end
 
+  def index
+    load_requests
+  end
+
+  def show
+    load_requests
+    @request = Request.all_for_trap(params[:trap]).find(params[:id])
+    respond_to do |format|
+      format.js
+      format.html { render :index }
+    end
+  end
+
   private
 
   def trap_request
@@ -28,5 +41,9 @@ class RequestsController < ApplicationController
 
   def raw_request
     request.env.inspect
+  end
+
+  def load_requests
+    @requests = Request.all_for_trap(params[:trap])
   end
 end

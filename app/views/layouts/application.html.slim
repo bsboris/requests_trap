@@ -10,4 +10,7 @@ html lang=I18n.locale
     = stylesheet_link_tag 'application'
     = javascript_include_tag 'application'
   body
-    = yield
+    .container
+      header#header
+        h3.text-muted RequestsTrap
+      = yield

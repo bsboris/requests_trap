@@ -1,0 +1,23 @@
+- if @requests.any?
+  .row
+    .col-md-4
+      .panel.panel-default
+        .panel-heading Requests for "#{params[:trap]}"
+        table.table.table-hover data-role="requests"
+          tbody
+            - @requests.each do |request|
+              tr.request class = ("success" if request == @request) data-role="requestTrigger" data-href=request_path(trap: params[:trap], id: request)
+                td: span.label.label-primary = request.data['via']
+                td: span.small.text-muted = request.created_at
+    .col-md-8
+      .panel.panel-default
+        .panel-heading Request details
+        - if defined?(@request)
+          = render(@request)
+        - else
+          table.table data-role="requestDetails"
+            tbody
+              tr
+                th Select request to inspect the details.
+- else
+  h1 Nothing to see here.

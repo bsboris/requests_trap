@@ -1,0 +1,34 @@
+table.table.table-fixed data-role="requestDetails"
+  tbody
+    tr
+      th Method
+      td: span.label.label-primary = request.data['via']
+    tr
+      th Timestamp
+      td = request.created_at
+    tr
+      th URL
+      td = pp request.data['url']
+    tr
+      th Scheme
+      td = pp request.data['scheme']
+    tr
+      th Port
+      td = pp request.data['port']
+    tr
+      th Format
+      td = pp request.data['format']
+    tr
+      th Params
+      td = pp request.data['params']
+    tr
+      th Headers
+      td = pp request.data['headers']
+    tr
+      th Cookies
+      td = pp request.data['cookies']
+    tr
+      th Raw request
+      td
+        p = link_to 'Show', '#', data: { role: 'showRawData'}
+        pre style="display: none;" data-role='rawData' = pp request.raw

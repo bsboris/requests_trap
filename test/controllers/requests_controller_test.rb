@@ -44,4 +44,23 @@ class RequestsControllerTest < ActionController::TestCase
     r = Request.last
     assert_equal 'bar', r.data['headers']['HTTP_CUSTOM_HEADER']
   end
+
+  test 'should list trapped requests' do
+    create(:request)
+    get :index, trap: 'test'
+    assert_response :success
+  end
+
+  test 'should get individual trapped request' do
+    r = create(:request)
+    get :show, trap: 'test', id: r
+    assert_response :success
+  end
+
+  test 'should not allow to view requests by id only' do
+    r = create(:request)
+    assert_raise ActiveRecord::RecordNotFound do
+      get :show, trap: 'test123', id: r
+    end
+  end
 end
