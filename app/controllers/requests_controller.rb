@@ -1,4 +1,7 @@
 class RequestsController < ApplicationController
+  include ActionController::Live
+  POLL_DELAY_SECONDS = 2
+
   def create
     trap_request
     render nothing: true, status: 200
@@ -15,6 +18,29 @@ class RequestsController < ApplicationController
       format.js
       format.html { render :index }
     end
+  end
+
+  def events
+    response.headers['Content-Type'] = 'text/event-stream'
+    sse = SSE.new(response.stream, retry: 300, event: "event")
+    start = Time.current
+    loop do
+      Request.uncached do
+        requests = Request.all_for_trap(params[:trap]).where('created_at > ?', start).all
+        if requests.any?
+          string = requests.map do |r|
+            render_to_string(partial: 'request_row.html.slim', locals: { request: r }).gsub(/\n/, '')
+          end.join
+          sse.write string
+          start = requests.first.created_at
+        end
+      end
+      sleep POLL_DELAY_SECONDS
+    end
+  rescue IOError
+    logger.error 'Stream closed.'
+  ensure
+    sse.close
   end
 
   private

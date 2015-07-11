@@ -1,5 +1,6 @@
 #= require jquery
 #= require jquery_ujs
+#= require jquery-ui/effect-highlight
 
 $ ->
   $('[data-role=requests]').on 'click', '[data-role=requestTrigger]', (e) ->
@@ -12,3 +13,8 @@ $ ->
   $(document).on 'click', '[data-role=showRawData]', (e) ->
     e.preventDefault();
     $('[data-role=rawData]').slideToggle()
+
+window.streamRequests = (path) ->
+  source = new EventSource("/#{path}/events")
+  source.addEventListener 'event', (e) ->
+    $(e.data).prependTo($('[data-role=requests] tbody')).effect('highlight', {}, 3000)
