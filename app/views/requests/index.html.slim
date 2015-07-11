@@ -3,7 +3,7 @@
     .col-md-4
       .panel.panel-default
         .panel-heading Requests for "#{params[:trap]}"
-        table.table.table-hover data-role="requests"
+        table.table.table-hover data-role='requests'
           tbody
             - @requests.each do |request|
               = render 'request_row', request: request, selected: request == @request
@@ -13,7 +13,7 @@
         - if defined?(@request)
           = render(@request)
         - else
-          table.table data-role="requestDetails"
+          table.table data-role='requestDetails'
             tbody
               tr
                 th Select request to inspect the details.

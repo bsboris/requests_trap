@@ -1,3 +1,3 @@
-tr.request class=('success' if defined?(selected) && selected) data-role="requestTrigger" data-href=request_path(trap: params[:trap], id: request)
+tr.request class=('success' if defined?(selected) && selected) data-role='requestTrigger' data-href=request_path(trap: params[:trap], id: request)
   td: span.label.label-primary = request.data['via']
   td: span.small.text-muted = request.created_at
