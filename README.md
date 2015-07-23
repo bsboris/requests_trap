@@ -1,0 +1,47 @@
+# Requests Trap
+
+A tool for capture and display HTTP requests.
+
+This simple tool is useful during the development of apps that integrate with external services, such as http clients, webhooks, etc. The Requests Trap app ('Req App') provides these services with an endpoint to which they can send requests and notifications.
+
+For example, let's assume we are developing an ecommerce site named "Shop" with PayPal integration. During development, Shop can use Req App to see PayPal requests via a specific endpoint.
+
+If a Req App user gives this URL to the PayPal service:
+
+    http://requests-trap.com/shop
+
+Then the user could see the IPN notifications sent by PayPal here:
+
+    http://requests-trap.com/shop/requests
+
+The user can choose any url, all the requests made to that url can be viewed by anyone that knows the url, so he can use hard-to-guess urls to avoid that:
+
+    http://requests-trap.com/mysupersecreturlxj34
+
+## How it works
+
+ The app has four routes:
+
+    / # splash page with some instructions 
+    /:trap_id # send requests to be captured here
+    /:trap_id/requests # display requests here 
+    /:trap_id/requests/:id # display a single request here
+
+Any request [POST, PUT, GET, DELETE, ...] made to `/:trap_id` will be saved in the db and displayed in `/:trap_id/requests`
+In response to any request made to `/:trap_id`, we will respond with the correct http code if success or not.
+In `/:trap_id/requests` we should see the `trap_id` in the header, and a list of the received requests, ordered by creation date DESC.
+
+Each request item should display all the information contained in the request, well formatted:
+- request date 
+- remote ip 
+- request-method
+- scheme 
+- query-string 
+- query-params 
+- cookies 
+- headers 
+- ...
+
+Also include a copy of the raw response, hidden by default, opened by clicking a link.
+
+New requests should appear on the page in real time, without a page refresh. 
